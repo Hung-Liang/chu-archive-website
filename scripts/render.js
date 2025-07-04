@@ -4,7 +4,7 @@ const subCategory = params.get("sub");
 const year = params.get("y");
 const month = String(params.get("m")).padStart(2, "0");
 
-fetch(`./data/${category}/${subCategory}/${year}/${month}.json`)
+fetch(`../data/${category}/${subCategory}/${year}/${month}.json`)
     .then((res) => {
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status} for ${res.url}`);

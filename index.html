@@ -341,7 +341,7 @@
                   .forEach((month) => {
                     const li = document.createElement("li");
                     // Link to month.html, passing category and sub_category
-                    li.innerHTML = `<a href="month.html?cat=${category}&sub=${sub_category}&y=${year}&m=${month}">${month} 月</a>`;
+                    li.innerHTML = `<a href="./pages/month.html?cat=${category}&sub=${sub_category}&y=${year}&m=${month}">${month} 月</a>`;
                     ul.appendChild(li);
                   });
                 container.appendChild(ul);
@@ -386,7 +386,7 @@
         function triggerSearch() {
           const query = popupSearchInput.value.trim();
           if (query) {
-            window.location.href = `search_results.html?query=${encodeURIComponent(
+            window.location.href = `./pages/search_results.html?query=${encodeURIComponent(
               query
             )}`;
           } else {
