@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>月份列表</title>
+  </head>
+  <body>
+    <h1 id="title"></h1>
+    <ul id="months"></ul>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const year = params.get("y");
+      document.getElementById("title").textContent = `選擇 ${year} 年的月份`;
+      const list = document.getElementById("months");
+      for (let m = 1; m <= 12; m++) {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="month.html?y=${year}&m=${m}">${m} 月</a>`;
+        list.appendChild(li);
+      }
+    </script>
+  </body>
+</html>
