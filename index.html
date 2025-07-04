@@ -95,6 +95,89 @@
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
       }
 
+      /* Search Button Specific Styles */
+      .search-button {
+        background-color: #f0ad4e; /* 橘色系 */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-size: 0.9em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+      }
+      .search-button:hover {
+        background-color: #ec971f;
+        transform: translateY(-2px);
+      }
+      .search-button:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+      .search-button .icon {
+        font-size: 1.2em; /* 放大鏡圖示大小 */
+      }
+      /* Search Input Pop-up Styles */
+      #search-popup-overlay {
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 100;
+        justify-content: center;
+        align-items: center;
+      }
+      #search-popup-content {
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        width: 90%;
+        max-width: 400px;
+        position: relative;
+      }
+      #search-popup-content input {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1em;
+      }
+      #search-popup-content button {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #search-popup-content button:hover {
+        background-color: #2980b9;
+      }
+      #close-search-popup {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #aaa;
+      }
+      #close-search-popup:hover {
+        color: #333;
+      }
+
       .developer-info {
         position: absolute;
         bottom: 10px;
@@ -156,6 +239,9 @@
 
     <div class="container">
       <div class="top-right-buttons">
+        <button id="open-search-popup" class="search-button">
+          <span class="icon">🔍</span> 搜尋直播
+        </button>
         <a href="index.html" class="action-button">回首頁</a>
         <a
           href="https://portaly.cc/commanderotaku"
@@ -171,6 +257,19 @@
       <div class="developer-info">
         開發者:
         <a href="https://github.com/Hung-Liang" target="_blank">Hung-Liang</a>
+      </div>
+    </div>
+
+    <div id="search-popup-overlay">
+      <div id="search-popup-content">
+        <span id="close-search-popup">×</span>
+        <h2>搜尋直播</h2>
+        <input
+          type="text"
+          id="popup-search-input"
+          placeholder="請輸入直播標題關鍵字"
+        />
+        <button id="perform-search-button">開始搜尋</button>
       </div>
     </div>
 
@@ -255,6 +354,54 @@
           document.getElementById("list").textContent =
             "無法載入歷史資料，請稍後再試。";
         });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const openSearchButton = document.getElementById("open-search-popup");
+        const searchPopupOverlay = document.getElementById(
+          "search-popup-overlay"
+        );
+        const closeSearchPopup = document.getElementById("close-search-popup");
+        const popupSearchInput = document.getElementById("popup-search-input");
+        const performSearchButton = document.getElementById(
+          "perform-search-button"
+        );
+
+        openSearchButton.addEventListener("click", () => {
+          searchPopupOverlay.style.display = "flex";
+          popupSearchInput.focus();
+        });
+
+        closeSearchPopup.addEventListener("click", () => {
+          searchPopupOverlay.style.display = "none";
+          popupSearchInput.value = "";
+        });
+
+        searchPopupOverlay.addEventListener("click", (event) => {
+          if (event.target === searchPopupOverlay) {
+            searchPopupOverlay.style.display = "none";
+            popupSearchInput.value = "";
+          }
+        });
+
+        function triggerSearch() {
+          const query = popupSearchInput.value.trim();
+          if (query) {
+            window.location.href = `search_results.html?query=${encodeURIComponent(
+              query
+            )}`;
+          } else {
+            alert("請輸入搜尋關鍵字！");
+          }
+        }
+
+        performSearchButton.addEventListener("click", triggerSearch);
+
+        popupSearchInput.addEventListener("keypress", (event) => {
+          if (event.key === "Enter") {
+            triggerSearch();
+          }
+        });
+      });
     </script>
   </body>
 </html>

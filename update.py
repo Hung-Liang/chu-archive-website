@@ -182,6 +182,7 @@ def update_index_json():
             not os.path.isdir(category_path)
             or category_folder.startswith('.')
             or category_folder == 'index.json'
+            or category_folder == 'all_videos_index.json'  # 排除新的索引檔
         ):
             continue
 
@@ -252,6 +253,85 @@ def process_videos_for_saving(videos, category, sub_category):
         )
 
 
+def generate_all_videos_index():
+    """
+    Generates a single JSON file (data/all_videos_index.json)
+    containing metadata for
+    all videos across all categories/sub-categories/years/months.
+    This file will be used for client-side search.
+    """
+    print("--- Generating All Videos Index ---")
+    all_videos_data = []
+    base_data_path = "data"
+
+    if not os.path.exists(base_data_path):
+        print("Data directory not found. Skipping index generation.")
+        return
+
+    for category_folder in os.listdir(base_data_path):
+        category_path = os.path.join(base_data_path, category_folder)
+        if (
+            not os.path.isdir(category_path)
+            or category_folder.startswith('.')
+            or category_folder == 'index.json'
+            or category_folder == 'all_videos_index.json'
+        ):
+            continue
+
+        for sub_category_folder in os.listdir(category_path):
+            sub_category_path = os.path.join(
+                category_path, sub_category_folder
+            )
+            if not os.path.isdir(
+                sub_category_path
+            ) or sub_category_folder.startswith('.'):
+                continue
+
+            for year_folder in os.listdir(sub_category_path):
+                if not year_folder.isdigit():
+                    continue
+                year_path = os.path.join(sub_category_path, year_folder)
+                if not os.path.isdir(year_path):
+                    continue
+
+                for file in os.listdir(year_path):
+                    if file.endswith(".json") and file[:-5].isdigit():
+                        month = int(file[:-5])
+                        videos_in_month = load_existing_videos(
+                            category_folder,
+                            sub_category_folder,
+                            int(year_folder),
+                            month,
+                        )
+                        for video in videos_in_month:
+                            all_videos_data.append(
+                                {
+                                    "title": video["title"],
+                                    "videoId": video["videoId"],
+                                    "publishedAt": video["publishedAt"],
+                                    "channelTitle": video["channelTitle"],
+                                    "thumbnail": video["thumbnail"],
+                                    "category": category_folder,
+                                    "subCategory": sub_category_folder,
+                                    "year": int(year_folder),
+                                    "month": month,
+                                }
+                            )
+    all_videos_data.sort(
+        key=lambda x: datetime.fromisoformat(
+            x["publishedAt"].replace("Z", "+00:00")
+        ),
+        reverse=True,
+    )
+
+    index_path = os.path.join(base_data_path, "all_videos_index.json")
+    with open(index_path, "w", encoding="utf-8") as f:
+        json.dump(all_videos_data, f, ensure_ascii=False, indent=2)
+    print(
+        f"Generated {len(all_videos_data)} entries in all_videos_index.json."
+    )
+
+
 def daily_update():
     """Executes the daily update, fetching only the latest 30 videos."""
     print("--- Executing Daily Update (Fetching Latest 30 Videos) ---")
@@ -271,6 +351,7 @@ def daily_update():
             process_videos_for_saving(videos, category, sub_category)
 
     update_index_json()
+    generate_all_videos_index()
     print("Index file updated.")
     print("Daily update complete.")
 
@@ -302,6 +383,7 @@ def initialize_all_playlists():
             process_videos_for_saving(videos, category, sub_category)
 
     update_index_json()
+    generate_all_videos_index()  # 在初始化後也生成全影片索引
     print("Index file updated.")
     print("Initialization complete.")
 
