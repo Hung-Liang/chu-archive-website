@@ -5,6 +5,9 @@ from datetime import datetime
 
 API_KEY = os.environ.get("YOUTUBE_API_KEY")
 
+# File to store the last update date
+LAST_UPDATE_FILE = "data/last_update.json"
+
 
 PLAYLIST_IDS = {
     "life": {
@@ -16,6 +19,14 @@ PLAYLIST_IDS = {
         "member": "UUMOgHzQMqm3BTaFLxJenIyWtg",
     },
 }
+
+
+def parse_description_for_tags(description):
+    """
+    Parses video description to extract tags.
+    Currently empty, awaiting your algorithm.
+    """
+    return []
 
 
 def fetch_videos_from_playlist(playlist_id, max_results=30):
@@ -46,6 +57,9 @@ def fetch_videos_from_playlist(playlist_id, max_results=30):
         if not snippet["title"] or not video_id:
             continue
 
+        # Parse tags
+        tags = parse_description_for_tags(snippet.get("description", ""))
+
         video = {
             "title": snippet["title"],
             "videoId": video_id,
@@ -58,6 +72,7 @@ def fetch_videos_from_playlist(playlist_id, max_results=30):
                 else ""
             ),
             "playlistId": playlist_id,
+            "tags": tags,  # Add tags field
         }
         videos.append(video)
 
@@ -94,6 +109,9 @@ def fetch_all_videos_from_playlist(playlist_id):
             if not snippet["title"] or not video_id:
                 continue
 
+            # Parse tags
+            tags = parse_description_for_tags(snippet.get("description", ""))
+
             video = {
                 "title": snippet["title"],
                 "videoId": video_id,
@@ -106,6 +124,7 @@ def fetch_all_videos_from_playlist(playlist_id):
                     else ""
                 ),
                 "playlistId": playlist_id,
+                "tags": tags,  # Add tags field
             }
             videos.append(video)
 
@@ -182,7 +201,10 @@ def update_index_json():
             not os.path.isdir(category_path)
             or category_folder.startswith('.')
             or category_folder == 'index.json'
-            or category_folder == 'all_videos_index.json'  # 排除新的索引檔
+            or category_folder
+            == 'all_videos_index.json'  # Exclude new index file
+            or category_folder
+            == 'last_update.json'  # Exclude last update file
         ):
             continue
 
@@ -275,6 +297,8 @@ def generate_all_videos_index():
             or category_folder.startswith('.')
             or category_folder == 'index.json'
             or category_folder == 'all_videos_index.json'
+            or category_folder
+            == 'last_update.json'  # Exclude last update file
         ):
             continue
 
@@ -315,6 +339,9 @@ def generate_all_videos_index():
                                     "subCategory": sub_category_folder,
                                     "year": int(year_folder),
                                     "month": month,
+                                    "tags": video.get(
+                                        "tags", []
+                                    ),  # Include tags field
                                 }
                             )
     all_videos_data.sort(
@@ -330,6 +357,14 @@ def generate_all_videos_index():
     print(
         f"Generated {len(all_videos_data)} entries in all_videos_index.json."
     )
+
+
+def update_last_update_date():
+    """Updates the last update date to the file."""
+    today = datetime.now().strftime("%Y-%m-%d %H:%M")
+    with open(LAST_UPDATE_FILE, "w", encoding="utf-8") as f:
+        json.dump({"last_update": today}, f, ensure_ascii=False, indent=2)
+    print(f"Last update date updated to: {today}")
 
 
 def daily_update():
@@ -352,6 +387,7 @@ def daily_update():
 
     update_index_json()
     generate_all_videos_index()
+    update_last_update_date()
     print("Index file updated.")
     print("Daily update complete.")
 
@@ -383,7 +419,8 @@ def initialize_all_playlists():
             process_videos_for_saving(videos, category, sub_category)
 
     update_index_json()
-    generate_all_videos_index()  # 在初始化後也生成全影片索引
+    generate_all_videos_index()
+    update_last_update_date()
     print("Index file updated.")
     print("Initialization complete.")
 

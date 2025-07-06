@@ -4,6 +4,49 @@ const subCategory = params.get("sub");
 const year = params.get("y");
 const month = String(params.get("m")).padStart(2, "0");
 
+// Removed tag popup related elements and logic as it's now handled by redirection to search_results.html
+
+function renderVideoItem(video) {
+    const div = document.createElement("div");
+    div.className = "video-item";
+    const youtubeUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
+
+    let tagsHtml = "";
+    if (video.tags && video.tags.length > 0) {
+        tagsHtml =
+            `<div class="video-tags">` +
+            video.tags
+                .map((tag) => `<span data-tag="${String(tag).toLowerCase()}">${tag}</span>`)
+                .join("") +
+            `</div>`;
+    }
+
+    div.innerHTML = `
+        <a href="${youtubeUrl}" target="_blank">
+            <img src="${video.thumbnail}" alt="${video.title}" width="320">
+            <p class="video-title">${video.title}</p>
+            <p class="video-date">${new Date(video.publishedAt).toLocaleDateString()}</p>
+        </a>
+        ${tagsHtml}
+    `;
+
+    // Add event listeners for tags to redirect to search_results.html
+    if (video.tags && video.tags.length > 0) {
+        div.querySelectorAll(".video-tags span").forEach((tagSpan) => {
+            tagSpan.addEventListener("click", (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                event.stopPropagation(); // Stop event bubbling
+                const tag = tagSpan.dataset.tag; // This tag is already lowercase
+                // Redirect to search_results.html with the tag as a query parameter
+                window.location.href = `../pages/search_results.html?tag=${encodeURIComponent(
+                    tag
+                )}`;
+            });
+        });
+    }
+    return div;
+}
+
 fetch(`../data/${category}/${subCategory}/${year}/${month}.json`)
     .then((res) => {
         if (!res.ok) {
@@ -20,16 +63,7 @@ fetch(`../data/${category}/${subCategory}/${year}/${month}.json`)
         }
 
         videos.forEach((video) => {
-            const div = document.createElement("div");
-            div.className = "video-item";
-            div.innerHTML = `
-                <a href="https://youtube.com/watch?v=${video.videoId}" target="_blank">
-                    <img src="${video.thumbnail}" alt="${video.title}" width="320">
-                    <p class="video-title">${video.title}</p>
-                    <p class="video-date">${new Date(video.publishedAt).toLocaleDateString()}</p>
-                </a>
-            `;
-            container.appendChild(div);
+            container.appendChild(renderVideoItem(video));
         });
     })
     .catch((error) => {
@@ -144,20 +178,33 @@ style.textContent = `
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
-    /* Styles for bottom-right developer info */
-    .developer-info {
+    /* Footer styles */
+    .footer-info {
         position: absolute;
         bottom: 10px;
-        right: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 60px); /* Adjust width to fit container padding */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         font-size: 0.8em;
         color: #777;
     }
-    .developer-info a {
+    .developer-info {
+        flex-grow: 1;
+        text-align: right;
+    }
+    .last-update-info {
+        flex-grow: 1;
+        text-align: left;
+    }
+    .developer-info a, .last-update-info a {
         color: #777;
         text-decoration: underline;
         font-weight: normal;
     }
-    .developer-info a:hover {
+    .developer-info a:hover, .last-update-info a:hover {
         color: #333;
     }
 
@@ -203,6 +250,25 @@ style.textContent = `
         font-size: 0.9em;
         color: #666;
         padding: 0 10px;
+    }
+    .video-item .video-tags {
+        padding: 5px 10px 10px;
+        font-size: 0.8em;
+        color: #555;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+    .video-item .video-tags span {
+        background-color: #e0e0e0;
+        padding: 3px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+    .video-item .video-tags span:hover {
+        background-color: #c0c0c0;
     }
 `;
 document.head.appendChild(style);

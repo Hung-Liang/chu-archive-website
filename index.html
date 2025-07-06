@@ -19,6 +19,10 @@
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         position: relative; /* For positioning absolute elements inside */
+        min-height: calc(
+          100vh - 40px
+        ); /* Ensure container is tall enough for footer positioning */
+        box-sizing: border-box; /* Include padding in height calculation */
       }
       h1 {
         color: #2c3e50;
@@ -178,19 +182,35 @@
         color: #333;
       }
 
-      .developer-info {
+      /* Footer styles */
+      .footer-info {
         position: absolute;
         bottom: 10px;
-        right: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 60px); /* Adjust width to fit container padding */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         font-size: 0.8em;
         color: #777;
       }
-      .developer-info a {
+      .developer-info {
+        flex-grow: 1;
+        text-align: right; /* Changed from left to right */
+      }
+      .last-update-info {
+        flex-grow: 1;
+        text-align: left; /* Changed from center to left */
+      }
+      .developer-info a,
+      .last-update-info a {
         color: #777;
         text-decoration: underline;
         font-weight: normal;
       }
-      .developer-info a:hover {
+      .developer-info a:hover,
+      .last-update-info a:hover {
         color: #333;
       }
 
@@ -254,9 +274,14 @@
       <h1>宅宅軍團長</h1>
       <div id="list"></div>
 
-      <div class="developer-info">
-        開發者:
-        <a href="https://github.com/Hung-Liang" target="_blank">Hung-Liang</a>
+      <div class="footer-info">
+        <div id="last-update-info" class="last-update-info">
+          最後更新日期: 載入中...
+        </div>
+        <div class="developer-info">
+          開發者:
+          <a href="https://github.com/Hung-Liang" target="_blank">Hung-Liang</a>
+        </div>
       </div>
     </div>
 
@@ -365,6 +390,27 @@
         const performSearchButton = document.getElementById(
           "perform-search-button"
         );
+        const lastUpdateInfo = document.getElementById("last-update-info");
+
+        // 載入最後更新日期
+        fetch("data/last_update.json")
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            return res.json();
+          })
+          .then((data) => {
+            if (data && data.last_update) {
+              lastUpdateInfo.textContent = `最後更新日期: ${data.last_update}`;
+            } else {
+              lastUpdateInfo.textContent = "最後更新日期: 無法載入";
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching last_update.json:", error);
+            lastUpdateInfo.textContent = "最後更新日期: 載入失敗";
+          });
 
         openSearchButton.addEventListener("click", () => {
           searchPopupOverlay.style.display = "flex";
@@ -390,7 +436,25 @@
               query
             )}`;
           } else {
-            alert("請輸入搜尋關鍵字！");
+            // 使用自訂訊息框替代 alert
+            const messageBox = document.createElement("div");
+            messageBox.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                z-index: 1000;
+                text-align: center;
+            `;
+            messageBox.innerHTML = `
+                <p>請輸入搜尋關鍵字！</p>
+                <button onclick="this.parentNode.remove()" style="padding: 8px 15px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">確定</button>
+            `;
+            document.body.appendChild(messageBox);
           }
         }
 
