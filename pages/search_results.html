@@ -504,9 +504,19 @@
             searchResultsInfo.textContent = `共找到 ${filteredResults.length} 筆包含標籤 ${tagsDisplay} 的結果。`;
           } else {
             // Otherwise, perform a title search
-            const filteredResults = allVideosIndexData.filter((video) =>
-              video.title.toLowerCase().includes(query)
-            );
+            const filteredResults = allVideosIndexData.filter((video) => {
+              const titleMatches = video.title.toLowerCase().includes(query);
+
+              // Check if any of the video's tags contain the query
+              const tagsMatch =
+                video.tags && Array.isArray(video.tags)
+                  ? video.tags.some((tag) =>
+                      String(tag).toLowerCase().includes(query)
+                    )
+                  : false;
+
+              return titleMatches || tagsMatch; // Return true if title OR tags match
+            });
             renderSearchResults(filteredResults);
             searchResultsInfo.textContent = `共找到 ${filteredResults.length} 筆結果。`;
           }
