@@ -224,7 +224,8 @@ def update_index_json():
     if not os.path.exists(base_data_path):
         return
 
-    for category_folder in os.listdir(base_data_path):
+    category_folders = sorted(os.listdir(base_data_path))
+    for category_folder in category_folders:
         category_path = os.path.join(base_data_path, category_folder)
         if (
             not os.path.isdir(category_path)
@@ -239,7 +240,8 @@ def update_index_json():
 
         index[category_folder] = {}
 
-        for sub_category_folder in os.listdir(category_path):
+        sub_category_folders = sorted(os.listdir(category_path))
+        for sub_category_folder in sub_category_folders:
             sub_category_path = os.path.join(
                 category_path, sub_category_folder
             )
@@ -250,9 +252,11 @@ def update_index_json():
 
             index[category_folder][sub_category_folder] = {}
 
-            for year_folder in os.listdir(sub_category_path):
-                if not year_folder.isdigit():
-                    continue
+            year_folders = sorted(
+                [f for f in os.listdir(sub_category_path) if f.isdigit()],
+                key=int,
+            )
+            for year_folder in year_folders:
                 year_path = os.path.join(sub_category_path, year_folder)
                 if not os.path.isdir(year_path):
                     continue
