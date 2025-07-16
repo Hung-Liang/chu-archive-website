@@ -28,13 +28,23 @@ def parse_description_for_tags(title, description):
     Parses video description to extract tags.
     Currently empty, awaiting your algorithm.
     """
-    ignore_tags = ["台v"]
+    ignore_tags = [
+        "台v",
+        "中文vtuber",
+        "台灣vtuber",
+        "twvtuber",
+        "vtuber",
+        "宅宅軍團長",
+        "臺灣vtuber",
+        "初見さん大歓迎",
+    ]
+
     tags = []
-    if "#初見" in title:
+    if "#初見" in title or "初見さん大歓迎" in description:
         tags.append("初見")
     all_tags = re.findall(r"#(\w+)", description)
     for tag in all_tags:
-        if tag not in tags and tag not in ignore_tags:
+        if tag not in tags and tag.lower() not in ignore_tags:
             tags.append(tag)
 
     book_names = re.findall(r"《(.+?)》", description)
@@ -127,7 +137,9 @@ def fetch_all_videos_from_playlist(playlist_id):
                 continue
 
             # Parse tags
-            tags = parse_description_for_tags(snippet.get("description", ""))
+            tags = parse_description_for_tags(
+                snippet.get("title", ""), snippet.get("description", "")
+            )
 
             video = {
                 "title": snippet["title"],
