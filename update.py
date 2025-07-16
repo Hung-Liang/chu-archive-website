@@ -1,7 +1,9 @@
-import requests
-import os
 import json
+import os
+import re
 from datetime import datetime
+
+import requests
 
 API_KEY = os.environ.get("YOUTUBE_API_KEY")
 
@@ -21,12 +23,25 @@ PLAYLIST_IDS = {
 }
 
 
-def parse_description_for_tags(description):
+def parse_description_for_tags(title, description):
     """
     Parses video description to extract tags.
     Currently empty, awaiting your algorithm.
     """
-    return []
+    ignore_tags = ["台v"]
+    tags = []
+    if "#初見" in title:
+        tags.append("初見")
+    all_tags = re.findall(r"#(\w+)", description)
+    for tag in all_tags:
+        if tag not in tags and tag not in ignore_tags:
+            tags.append(tag)
+
+    book_names = re.findall(r"《(.+?)》", description)
+    for book_name in book_names:
+        if book_name not in tags:
+            tags.append(book_name)
+    return tags
 
 
 def fetch_videos_from_playlist(playlist_id, max_results=30):
@@ -58,7 +73,9 @@ def fetch_videos_from_playlist(playlist_id, max_results=30):
             continue
 
         # Parse tags
-        tags = parse_description_for_tags(snippet.get("description", ""))
+        tags = parse_description_for_tags(
+            snippet.get("title", ""), snippet.get("description", "")
+        )
 
         video = {
             "title": snippet["title"],
