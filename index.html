@@ -266,6 +266,26 @@
           display: none; /* Hide images completely on very small screens to save space */
         }
       }
+
+      /* Skeleton Loading Styles */
+      @keyframes skeleton-loading {
+        0% { background-color: #e2e5e7; }
+        100% { background-color: #f1f3f4; }
+      }
+      .skeleton-title {
+        height: 30px;
+        margin-top: 25px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        animation: skeleton-loading 1s linear infinite alternate;
+      }
+      .skeleton-pill {
+        width: 60px; 
+        height: 35px; 
+        border-radius: 5px; 
+        background-color: #e2e5e7;
+        animation: skeleton-loading 1s linear infinite alternate;
+      }
     </style>
   </head>
   <body>
@@ -299,7 +319,23 @@
       </div>
 
       <h1>宅宅軍團長</h1>
-      <div id="list"></div>
+      <div id="list">
+        <!-- Skeleton Loaders -->
+        <div class="skeleton-title" style="width: 30%;"></div>
+        <div class="skeleton-title" style="width: 15%; height: 20px; margin-top: 15px;"></div>
+        <ul>
+          <li class="skeleton-pill"></li>
+          <li class="skeleton-pill"></li>
+          <li class="skeleton-pill"></li>
+        </ul>
+        <div class="skeleton-title" style="width: 30%; margin-top: 40px;"></div>
+        <div class="skeleton-title" style="width: 15%; height: 20px; margin-top: 15px;"></div>
+        <ul>
+          <li class="skeleton-pill"></li>
+          <li class="skeleton-pill"></li>
+          <li class="skeleton-pill"></li>
+        </ul>
+      </div>
 
       <div class="footer-info">
         <div id="last-update-info" class="last-update-info">
@@ -330,6 +366,7 @@
         .then((res) => res.json())
         .then((index) => {
           const container = document.getElementById("list");
+          container.innerHTML = ""; // Clear skeleton loaders
 
           // Define the desired order of categories (Life first, then Gaming)
           const orderedCategories = ["life", "gaming"];
