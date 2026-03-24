@@ -15,6 +15,7 @@
       gtag("config", "G-6486NPH5LD");
     </script>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>宅宅軍團長Youtube回顧</title>
     <meta name="description" content="包含宅宅軍團長最新的直播存檔、遊戲回放與會限影音，支援關鍵字與標籤過濾，方便隨時追溯歷史內容。" />
     <meta property="og:title" content="宅宅軍團長Youtube回顧" />
@@ -388,6 +389,47 @@
       }
       html.dark-mode .side-image {
         opacity: 0.1; /* slightly darker for dark mode */
+      }
+
+      /* Mobile Responsive Optimizations */
+      @media (max-width: 600px) {
+        body {
+          margin: 10px;
+        }
+        .container {
+          padding: 15px 20px;
+          min-height: calc(100vh - 20px);
+        }
+        .top-right-buttons {
+          position: static;
+          justify-content: center;
+          margin-bottom: 20px;
+          flex-wrap: wrap;
+        }
+        h1 {
+          font-size: 1.5em;
+          margin-bottom: 20px;
+        }
+        ul {
+          gap: 15px;
+        }
+        li {
+          padding: 12px 20px; /* Larger tap target */
+          flex-grow: 1;
+          text-align: center;
+        }
+        .footer-info {
+          position: static;
+          transform: none;
+          width: 100%;
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 30px;
+          text-align: center;
+        }
+        .last-update-info, .developer-info {
+          text-align: center;
+        }
       }
     </style>
   </head>

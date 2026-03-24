@@ -15,6 +15,7 @@
       gtag("config", "G-6486NPH5LD");
     </script>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>搜尋結果 - 宅宅軍團長回顧</title>
     <meta name="description" content="在宅宅軍團長所有的歷史直播與遊戲回放中搜尋精華內容。" />
     <meta property="og:title" content="搜尋結果 - 宅宅軍團長回顧" />
@@ -373,6 +374,53 @@
       }
       html.dark-mode .side-image {
         opacity: 0.1; /* slightly darker for dark mode */
+      }
+
+      /* Mobile Responsive Optimizations */
+      @media (max-width: 600px) {
+        body {
+          margin: 0;
+        }
+        .container {
+          margin: 0;
+          padding: 15px;
+          border-radius: 0;
+          min-height: 100vh;
+        }
+        .back-to-prev-button {
+          position: static;
+          display: block;
+          text-align: center;
+          margin-bottom: 10px;
+        }
+        .top-right-buttons {
+          position: static;
+          justify-content: center;
+          margin-bottom: 20px;
+          flex-wrap: wrap;
+        }
+        #search-input-container {
+          margin-top: 20px;
+        }
+        #search-input {
+          width: 95%;
+        }
+        .video-grid {
+          grid-template-columns: 1fr; /* Single column for mobile */
+          gap: 15px;
+        }
+        .footer-info {
+          position: static;
+          transform: none;
+          width: 100%;
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 30px;
+          text-align: center;
+        }
+        .last-update-info, .developer-info {
+          text-align: center;
+        }
       }
     </style>
   </head>
