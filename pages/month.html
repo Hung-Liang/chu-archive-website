@@ -26,6 +26,7 @@
     <meta name="twitter:description" content="瀏覽宅宅軍團長特定月份的直播紀錄與影音回放。" />
     <meta name="twitter:image" content="https://hung-liang.github.io/chu-archive-website/asset/icon.jpg" />
     <link rel="icon" href="../asset/icon.jpg" type="image/jpg" />
+    <script src="../scripts/theme.js"></script>
     <style>
       body {
           font-family: Arial, sans-serif;
@@ -248,6 +249,92 @@
           border-radius: 4px;
           animation: skeleton-loading 1s linear infinite alternate;
       }
+      /* Theme Toggle Button */
+      .theme-toggle-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 10px;
+        background-color: transparent;
+        color: inherit;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.2em;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+      }
+      .theme-toggle-btn:hover {
+        background-color: #f0f0f0;
+      }
+      /* Dark Mode Styles */
+      html.dark-mode body {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+      html.dark-mode .container {
+        background-color: #1e1e1e;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      html.dark-mode h1, html.dark-mode h2, html.dark-mode h3, html.dark-mode a {
+        color: #e0e0e0;
+        border-color: #333;
+      }
+      html.dark-mode h1 {
+        border-bottom-color: #333;
+      }
+      html.dark-mode h2 {
+        border-bottom-color: #333;
+      }
+      html.dark-mode a:hover {
+        color: #3498db;
+      }
+      html.dark-mode li, html.dark-mode .video-item, html.dark-mode #search-popup-content, html.dark-mode .skeleton-card {
+        background-color: #2c2c2c;
+        border-color: #444;
+        color: #e0e0e0;
+      }
+      html.dark-mode li:hover {
+        background-color: #3a3a3a;
+      }
+      html.dark-mode .video-item .video-title {
+        color: #e0e0e0;
+      }
+      html.dark-mode .video-item .video-meta, html.dark-mode .video-item .video-date {
+        color: #aaa;
+      }
+      html.dark-mode .video-item .video-tags span {
+        background-color: #444;
+        color: #ddd;
+      }
+      html.dark-mode .video-item .video-tags span:hover {
+        background-color: #555;
+      }
+      html.dark-mode input, html.dark-mode select {
+        background-color: #2c2c2c;
+        color: #e0e0e0;
+        border: 1px solid #444;
+      }
+      html.dark-mode .skeleton-loading, html.dark-mode .skeleton-title, html.dark-mode .skeleton-pill, html.dark-mode .skeleton-image, html.dark-mode .skeleton-text {
+        animation: skeleton-loading-dark 1s linear infinite alternate;
+      }
+      @keyframes skeleton-loading-dark {
+        0% { background-color: #2c2c2c; }
+        100% { background-color: #3a3a3a; }
+      }
+      html.dark-mode .theme-toggle-btn {
+        border-color: #555;
+        background-color: #3a3a3a;
+        color: #e0e0e0;
+      }
+      html.dark-mode .theme-toggle-btn:hover {
+        background-color: #555;
+      }
+      html.dark-mode .action-button, html.dark-mode .search-button, html.dark-mode .back-to-prev-button {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      html.dark-mode .side-image {
+        opacity: 0.1; /* slightly darker for dark mode */
+      }
     </style>
   </head>
   <body>
@@ -272,6 +359,7 @@
       >
 
       <div class="top-right-buttons">
+        <button id="theme-toggle" class="theme-toggle-btn" title="切換深色模式">🌙</button>
         <a href="../index.html" class="action-button">回首頁</a>
         <a
           href="https://portaly.cc/commanderotaku"
