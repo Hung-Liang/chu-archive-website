@@ -27,7 +27,23 @@
     <meta name="twitter:description" content="包含宅宅軍團長最新的直播存檔、遊戲回放與會限影音，支援關鍵字與標籤過濾，方便隨時追溯歷史內容。" />
     <meta name="twitter:image" content="https://hung-liang.github.io/chu-archive-website/asset/icon.jpg" />
     <link rel="icon" href="./asset/icon.jpg" type="image/jpg" />
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="theme-color" content="#333333" />
     <script src="./scripts/theme.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./sw.js")
+            .then((registration) => {
+              console.log("Service Worker registered with scope:", registration.scope);
+            })
+            .catch((error) => {
+              console.log("Service Worker registration failed:", error);
+            });
+        });
+      }
+    </script>
     <style>
       body {
         font-family: Arial, sans-serif;

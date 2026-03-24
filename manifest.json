@@ -1,0 +1,21 @@
+{
+  "name": "宅宅軍團長Youtube回顧",
+  "short_name": "宅宅軍團長",
+  "description": "包含宅宅軍團長最新的直播存檔、遊戲回放與會限影音，支援關鍵字與標籤過濾，方便隨時追溯歷史內容。",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#333333",
+  "icons": [
+    {
+      "src": "./asset/icon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "./asset/icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
