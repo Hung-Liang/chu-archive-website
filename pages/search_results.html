@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <script
@@ -17,15 +17,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>搜尋結果 - 宅宅軍團長回顧</title>
-    <meta name="description" content="在宅宅軍團長所有的歷史直播與遊戲回放中搜尋精華內容。" />
+    <meta
+      name="description"
+      content="在宅宅軍團長所有的歷史直播與遊戲存檔中搜尋精華內容。"
+    />
     <meta property="og:title" content="搜尋結果 - 宅宅軍團長回顧" />
-    <meta property="og:description" content="在宅宅軍團長所有的歷史直播與遊戲回放中搜尋精華內容。" />
+    <meta
+      property="og:description"
+      content="在宅宅軍團長所有的歷史直播與遊戲存檔中搜尋精華內容。"
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://hung-liang.github.io/chu-archive-website/asset/icon.jpg" />
+    <meta
+      property="og:image"
+      content="https://hung-liang.github.io/chu-archive-website/asset/icon.jpg"
+    />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="搜尋結果 - 宅宅軍團長回顧" />
-    <meta name="twitter:description" content="在宅宅軍團長所有的歷史直播與遊戲回放中搜尋精華內容。" />
-    <meta name="twitter:image" content="https://hung-liang.github.io/chu-archive-website/asset/icon.jpg" />
+    <meta name="twitter:title" content="搜尋結果 - 宅宅軍團長Youtube存檔" />
+    <meta
+      name="twitter:description"
+      content="在宅宅軍團長所有的歷史直播與遊戲存檔中搜尋精華內容。"
+    />
+
+    <meta
+      name="twitter:image"
+      content="https://hung-liang.github.io/chu-archive-website/asset/icon.jpg"
+    />
     <link rel="icon" href="../asset/icon.jpg" type="image/jpg" />
     <script src="../scripts/theme.js"></script>
     <style>
@@ -85,7 +101,9 @@
         color: white;
         text-decoration: none;
         border-radius: 5px;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        transition:
+          background-color 0.3s ease,
+          transform 0.2s ease;
         font-weight: bold;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         font-size: 0.9em;
@@ -114,7 +132,9 @@
         color: white;
         text-decoration: none;
         border-radius: 5px;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        transition:
+          background-color 0.3s ease,
+          transform 0.2s ease;
         font-weight: bold;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         font-size: 0.9em;
@@ -292,15 +312,19 @@
 
       /* Skeleton Loading Styles */
       @keyframes skeleton-loading {
-        0% { background-color: #e2e5e7; }
-        100% { background-color: #f1f3f4; }
+        0% {
+          background-color: #e2e5e7;
+        }
+        100% {
+          background-color: #f1f3f4;
+        }
       }
       .skeleton-card {
         background-color: #fff;
         border: 1px solid #ddd;
         border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         height: 280px;
       }
       .skeleton-image {
@@ -326,7 +350,9 @@
         border-radius: 5px;
         cursor: pointer;
         font-size: 1.2em;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
+        transition:
+          background-color 0.3s ease,
+          border-color 0.3s ease;
       }
       .theme-toggle-btn:hover {
         background-color: #f0f0f0;
@@ -340,7 +366,10 @@
         background-color: #1e1e1e;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
       }
-      html.dark-mode h1, html.dark-mode h2, html.dark-mode h3, html.dark-mode a {
+      html.dark-mode h1,
+      html.dark-mode h2,
+      html.dark-mode h3,
+      html.dark-mode a {
         color: #e0e0e0;
         border-color: #333;
       }
@@ -353,7 +382,10 @@
       html.dark-mode a:hover {
         color: #3498db;
       }
-      html.dark-mode li, html.dark-mode .video-item, html.dark-mode #search-popup-content, html.dark-mode .skeleton-card {
+      html.dark-mode li,
+      html.dark-mode .video-item,
+      html.dark-mode #search-popup-content,
+      html.dark-mode .skeleton-card {
         background-color: #2c2c2c;
         border-color: #444;
         color: #e0e0e0;
@@ -364,7 +396,8 @@
       html.dark-mode .video-item .video-title {
         color: #e0e0e0;
       }
-      html.dark-mode .video-item .video-meta, html.dark-mode .video-item .video-date {
+      html.dark-mode .video-item .video-meta,
+      html.dark-mode .video-item .video-date {
         color: #aaa;
       }
       html.dark-mode .video-item .video-tags span {
@@ -374,17 +407,26 @@
       html.dark-mode .video-item .video-tags span:hover {
         background-color: #555;
       }
-      html.dark-mode input, html.dark-mode select {
+      html.dark-mode input,
+      html.dark-mode select {
         background-color: #2c2c2c;
         color: #e0e0e0;
         border: 1px solid #444;
       }
-      html.dark-mode .skeleton-loading, html.dark-mode .skeleton-title, html.dark-mode .skeleton-pill, html.dark-mode .skeleton-image, html.dark-mode .skeleton-text {
+      html.dark-mode .skeleton-loading,
+      html.dark-mode .skeleton-title,
+      html.dark-mode .skeleton-pill,
+      html.dark-mode .skeleton-image,
+      html.dark-mode .skeleton-text {
         animation: skeleton-loading-dark 1s linear infinite alternate;
       }
       @keyframes skeleton-loading-dark {
-        0% { background-color: #2c2c2c; }
-        100% { background-color: #3a3a3a; }
+        0% {
+          background-color: #2c2c2c;
+        }
+        100% {
+          background-color: #3a3a3a;
+        }
       }
       html.dark-mode .theme-toggle-btn {
         border-color: #555;
@@ -394,7 +436,9 @@
       html.dark-mode .theme-toggle-btn:hover {
         background-color: #555;
       }
-      html.dark-mode .action-button, html.dark-mode .search-button, html.dark-mode .back-to-prev-button {
+      html.dark-mode .action-button,
+      html.dark-mode .search-button,
+      html.dark-mode .back-to-prev-button {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
       }
       html.dark-mode .side-image {
@@ -443,7 +487,8 @@
           margin-top: 30px;
           text-align: center;
         }
-        .last-update-info, .developer-info {
+        .last-update-info,
+        .developer-info {
           text-align: center;
         }
       }
@@ -469,7 +514,9 @@
       <a href="../index.html" class="back-to-prev-button">← 回首頁</a>
 
       <div class="top-right-buttons">
-        <button id="theme-toggle" class="theme-toggle-btn" title="切換深色模式">🌙</button>
+        <button id="theme-toggle" class="theme-toggle-btn" title="切換深色模式">
+          🌙
+        </button>
         <a
           href="https://portaly.cc/commanderotaku"
           target="_blank"
@@ -496,18 +543,18 @@
         <div class="video-grid">
           <div class="skeleton-card">
             <div class="skeleton-image"></div>
-            <div class="skeleton-text" style="width: 80%;"></div>
-            <div class="skeleton-text" style="width: 40%;"></div>
+            <div class="skeleton-text" style="width: 80%"></div>
+            <div class="skeleton-text" style="width: 40%"></div>
           </div>
           <div class="skeleton-card">
             <div class="skeleton-image"></div>
-            <div class="skeleton-text" style="width: 70%;"></div>
-            <div class="skeleton-text" style="width: 50%;"></div>
+            <div class="skeleton-text" style="width: 70%"></div>
+            <div class="skeleton-text" style="width: 50%"></div>
           </div>
           <div class="skeleton-card">
             <div class="skeleton-image"></div>
-            <div class="skeleton-text" style="width: 90%;"></div>
-            <div class="skeleton-text" style="width: 30%;"></div>
+            <div class="skeleton-text" style="width: 90%"></div>
+            <div class="skeleton-text" style="width: 30%"></div>
           </div>
         </div>
       </div>
@@ -528,7 +575,7 @@
         const searchInput = document.getElementById("search-input");
         const videoListContainer = document.getElementById("video-list");
         const searchResultsInfo = document.getElementById(
-          "search-results-info"
+          "search-results-info",
         );
         const lastUpdateInfo = document.getElementById("last-update-info");
 
@@ -567,9 +614,9 @@
 
         function getCategoryDisplayName(category) {
           if (category === "life") {
-            return "直播回放";
+            return "直播存檔";
           } else if (category === "gaming") {
-            return "遊戲回放";
+            return "遊戲存檔";
           }
           return "";
         }
@@ -597,15 +644,19 @@
                 .map(
                   (tag) =>
                     `<span data-tag="${String(
-                      tag
-                    ).toLowerCase()}">${tag}</span>`
+                      tag,
+                    ).toLowerCase()}">${tag}</span>`,
                 )
                 .join("") +
               `</div>`;
           }
 
-          const durationHtml = video.duration ? `<span class="video-duration">${video.duration}</span>` : "";
-          const viewCountHtml = video.viewCount ? `<p class="video-view-count">${Number(video.viewCount).toLocaleString()} 次觀看</p>` : "";
+          const durationHtml = video.duration
+            ? `<span class="video-duration">${video.duration}</span>`
+            : "";
+          const viewCountHtml = video.viewCount
+            ? `<p class="video-view-count">${Number(video.viewCount).toLocaleString()} 次觀看</p>`
+            : "";
 
           div.innerHTML = `
             <a href="${youtubeUrl}" target="_blank">
@@ -619,7 +670,7 @@
                 (${video.year}年${video.month}月)
               </p>
               <p class="video-date">${new Date(
-                video.publishedAt
+                video.publishedAt,
               ).toLocaleDateString()}</p>
             </a>
             ${tagsHtml}
@@ -682,7 +733,7 @@
                     (video) => {
                       videoGrid.appendChild(renderVideoItem(video));
                       totalDisplayedVideos++;
-                    }
+                    },
                   );
                   subCategoryDiv.appendChild(videoGrid);
                   categoryDiv.appendChild(subCategoryDiv);
@@ -729,11 +780,11 @@
               }
               // Convert video's tags to lowercase for case-insensitive comparison
               const lowerCaseVideoTags = video.tags.map((tag) =>
-                String(tag).toLowerCase()
+                String(tag).toLowerCase(),
               );
               // Check if all searchTags (which are already lowercase) are included in lowerCaseVideoTags
               return searchTags.every((searchTag) =>
-                lowerCaseVideoTags.includes(searchTag)
+                lowerCaseVideoTags.includes(searchTag),
               );
             });
 
@@ -749,7 +800,7 @@
               const tagsMatch =
                 video.tags && Array.isArray(video.tags)
                   ? video.tags.some((tag) =>
-                      String(tag).toLowerCase().includes(query)
+                      String(tag).toLowerCase().includes(query),
                     )
                   : false;
 
@@ -772,7 +823,7 @@
             // For multiple tags, we'll just pass the single clicked tag.
             // User can then manually add more tags in the search bar if needed.
             window.location.href = `./search_results.html?tag=${encodeURIComponent(
-              tag
+              tag,
             )}`;
           }
         });
@@ -782,7 +833,7 @@
           .then((res) => {
             if (!res.ok) {
               throw new Error(
-                `HTTP error! status: ${res.status} for ${res.url}`
+                `HTTP error! status: ${res.status} for ${res.url}`,
               );
             }
             return res.json();

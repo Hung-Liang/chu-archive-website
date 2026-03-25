@@ -1,7 +1,8 @@
 {
-  "name": "宅宅軍團長Youtube回顧",
-  "short_name": "宅宅軍團長",
-  "description": "包含宅宅軍團長最新的直播存檔、遊戲回放與會限影音，支援關鍵字與標籤過濾，方便隨時追溯歷史內容。",
+  "name": "宅宅軍團長 Youtube 存檔",
+  "short_name": "宅宅軍團長 存檔",
+  "description": "包含宅宅軍團長最新的直播存檔、遊戲存檔與會限影音，支援關鍵字與標籤過濾，方便隨時追溯歷史內容。",
+
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
