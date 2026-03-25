@@ -54,6 +54,64 @@ def parse_description_for_tags(title, description):
     return tags
 
 
+def parse_duration(duration):
+    """Parses ISO 8601 duration to a formatted string (H:MM:SS, MM:SS, etc.)."""
+    if not duration:
+        return ""
+
+    match = re.match(
+        r'P(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?', duration
+    )
+    if not match:
+        return ""
+
+    days, hours, minutes, seconds = match.groups()
+    days = int(days) if days else 0
+    hours = int(hours) if hours else 0
+    minutes = int(minutes) if minutes else 0
+    seconds = int(seconds) if seconds else 0
+
+    total_hours = days * 24 + hours
+
+    if total_hours > 0:
+        return f"{total_hours}:{minutes:02d}:{seconds:02d}"
+    else:
+        return f"{minutes}:{seconds:02d}"
+
+
+def fetch_video_details(video_ids):
+    """Fetches duration and view count for a list of video IDs (max 50)."""
+    if not video_ids:
+        return {}
+
+    url = "https://www.googleapis.com/youtube/v3/videos"
+    params = {
+        "key": API_KEY,
+        "id": ",".join(video_ids),
+        "part": "contentDetails,statistics",
+    }
+
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    data = response.json()
+
+    details = {}
+    for item in data.get("items", []):
+        video_id = item["id"]
+        duration = item["contentDetails"].get("duration")
+        view_count = item["statistics"].get("viewCount", "0")
+
+        if view_count == "0":
+            pass
+
+        details[video_id] = {
+            "duration": parse_duration(duration),
+            "viewCount": view_count,
+        }
+
+    return details
+
+
 def fetch_videos_from_playlist(playlist_id, max_results=30):
     """
     Fetches the latest videos from the specified playlist,
@@ -75,6 +133,11 @@ def fetch_videos_from_playlist(playlist_id, max_results=30):
 
     data = response.json()
 
+    video_ids = [
+        item["contentDetails"]["videoId"] for item in data.get("items", [])
+    ]
+    details = fetch_video_details(video_ids)
+
     for item in data.get("items", []):
         snippet = item["snippet"]
         video_id = item["contentDetails"]["videoId"]
@@ -86,6 +149,8 @@ def fetch_videos_from_playlist(playlist_id, max_results=30):
         tags = parse_description_for_tags(
             snippet.get("title", ""), snippet.get("description", "")
         )
+
+        video_info = details.get(video_id, {"duration": "", "viewCount": "0"})
 
         video = {
             "title": snippet["title"],
@@ -100,6 +165,8 @@ def fetch_videos_from_playlist(playlist_id, max_results=30):
             ),
             "playlistId": playlist_id,
             "tags": tags,  # Add tags field
+            "duration": video_info["duration"],
+            "viewCount": video_info["viewCount"],
         }
         videos.append(video)
 
@@ -128,6 +195,11 @@ def fetch_all_videos_from_playlist(playlist_id):
         response.raise_for_status()
         data = response.json()
 
+        video_ids = [
+            item["contentDetails"]["videoId"] for item in data.get("items", [])
+        ]
+        details = fetch_video_details(video_ids)
+
         for item in data.get("items", []):
             snippet = item["snippet"]
             video_id = item["contentDetails"]["videoId"]
@@ -139,6 +211,10 @@ def fetch_all_videos_from_playlist(playlist_id):
             # Parse tags
             tags = parse_description_for_tags(
                 snippet.get("title", ""), snippet.get("description", "")
+            )
+
+            video_info = details.get(
+                video_id, {"duration": "", "viewCount": "0"}
             )
 
             video = {
@@ -154,6 +230,8 @@ def fetch_all_videos_from_playlist(playlist_id):
                 ),
                 "playlistId": playlist_id,
                 "tags": tags,  # Add tags field
+                "duration": video_info["duration"],
+                "viewCount": video_info["viewCount"],
             }
             videos.append(video)
 
@@ -375,6 +453,8 @@ def generate_all_videos_index():
                                     "tags": video.get(
                                         "tags", []
                                     ),  # Include tags field
+                                    "duration": video.get("duration", ""),
+                                    "viewCount": video.get("viewCount", "0"),
                                 }
                             )
     all_videos_data.sort(
