@@ -591,6 +591,15 @@
     </div>
 
     <script>
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
       fetch("data/index.json")
         .then((res) => res.json())
         .then((index) => {
@@ -659,7 +668,7 @@
                   .forEach((month) => {
                     const li = document.createElement("li");
                     // Link to month.html, passing category and sub_category
-                    li.innerHTML = `<a href="./pages/month.html?cat=${category}&sub=${sub_category}&y=${year}&m=${month}">${month} 月</a>`;
+                    li.innerHTML = `<a href="./pages/month.html?cat=${escapeHtml(category)}&sub=${escapeHtml(sub_category)}&y=${escapeHtml(year)}&m=${escapeHtml(month)}">${escapeHtml(month)} 月</a>`;
                     ul.appendChild(li);
                   });
                 container.appendChild(ul);
