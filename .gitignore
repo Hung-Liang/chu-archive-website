@@ -2,3 +2,4 @@ key
 .agent
 .plan.md
 *.tmp
+__pycache__/
