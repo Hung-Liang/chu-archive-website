@@ -80,7 +80,7 @@ def parse_duration(duration):
         return f"{minutes}:{seconds:02d}"
 
 
-def fetch_video_details(video_ids):
+def fetch_video_details(video_ids, include_view_count=True):
     """Fetches duration and view count for a list of video IDs (max 50)."""
     if not video_ids:
         return {}
@@ -89,7 +89,11 @@ def fetch_video_details(video_ids):
     params = {
         "key": API_KEY,
         "id": ",".join(video_ids),
-        "part": "contentDetails,statistics",
+        "part": (
+            "contentDetails,statistics"
+            if include_view_count
+            else "contentDetails"
+        ),
     }
 
     response = requests.get(url, params=params, timeout=30)
@@ -100,17 +104,19 @@ def fetch_video_details(video_ids):
     for item in data.get("items", []):
         video_id = item["id"]
         duration = item["contentDetails"].get("duration")
-        view_count = item["statistics"].get("viewCount", "0")
 
-        details[video_id] = {
-            "duration": parse_duration(duration),
-            "viewCount": view_count,
-        }
+        details[video_id] = {"duration": parse_duration(duration)}
+        if include_view_count:
+            details[video_id]["viewCount"] = item["statistics"].get(
+                "viewCount", "0"
+            )
 
     return details
 
 
-def fetch_videos_from_playlist(playlist_id, max_results=30):
+def fetch_videos_from_playlist(
+    playlist_id, max_results=30, include_view_count=True
+):
     """
     Fetches the latest videos from the specified playlist,
     defaulting to max 30 results.
@@ -134,7 +140,7 @@ def fetch_videos_from_playlist(playlist_id, max_results=30):
     video_ids = [
         item["contentDetails"]["videoId"] for item in data.get("items", [])
     ]
-    details = fetch_video_details(video_ids)
+    details = fetch_video_details(video_ids, include_view_count)
 
     for item in data.get("items", []):
         snippet = item["snippet"]
@@ -148,7 +154,7 @@ def fetch_videos_from_playlist(playlist_id, max_results=30):
             snippet.get("title", ""), snippet.get("description", "")
         )
 
-        video_info = details.get(video_id, {"duration": "", "viewCount": "0"})
+        video_info = details.get(video_id, {"duration": ""})
 
         video = {
             "title": snippet["title"],
@@ -164,14 +170,15 @@ def fetch_videos_from_playlist(playlist_id, max_results=30):
             "playlistId": playlist_id,
             "tags": tags,  # Add tags field
             "duration": video_info["duration"],
-            "viewCount": video_info["viewCount"],
         }
+        if include_view_count:
+            video["viewCount"] = video_info.get("viewCount", "0")
         videos.append(video)
 
     return videos
 
 
-def fetch_all_videos_from_playlist(playlist_id):
+def fetch_all_videos_from_playlist(playlist_id, include_view_count=True):
     """
     Fetches all videos from the specified playlist.
     This function is for initialization and will paginate through all results.
@@ -196,7 +203,7 @@ def fetch_all_videos_from_playlist(playlist_id):
         video_ids = [
             item["contentDetails"]["videoId"] for item in data.get("items", [])
         ]
-        details = fetch_video_details(video_ids)
+        details = fetch_video_details(video_ids, include_view_count)
 
         for item in data.get("items", []):
             snippet = item["snippet"]
@@ -211,9 +218,7 @@ def fetch_all_videos_from_playlist(playlist_id):
                 snippet.get("title", ""), snippet.get("description", "")
             )
 
-            video_info = details.get(
-                video_id, {"duration": "", "viewCount": "0"}
-            )
+            video_info = details.get(video_id, {"duration": ""})
 
             video = {
                 "title": snippet["title"],
@@ -229,8 +234,9 @@ def fetch_all_videos_from_playlist(playlist_id):
                 "playlistId": playlist_id,
                 "tags": tags,  # Add tags field
                 "duration": video_info["duration"],
-                "viewCount": video_info["viewCount"],
             }
+            if include_view_count:
+                video["viewCount"] = video_info.get("viewCount", "0")
             videos.append(video)
 
         next_page_token = data.get("nextPageToken")
@@ -459,8 +465,9 @@ def generate_all_videos_index():
                                 "year": int(year_folder),
                                 "month": month,
                                 "duration": video.get("duration", ""),
-                                "viewCount": video.get("viewCount", "0"),
                             }
+                            if "viewCount" in video:
+                                entry["viewCount"] = video["viewCount"]
                             # Omit fields the frontend can derive to keep
                             # the search index small
                             thumbnail = video.get("thumbnail", "")
@@ -503,7 +510,11 @@ def daily_update():
                 f"-> '{sub_category}' (Playlist: {playlist_id})..."
             )
 
-            videos = fetch_videos_from_playlist(playlist_id, max_results=30)
+            videos = fetch_videos_from_playlist(
+                playlist_id,
+                max_results=30,
+                include_view_count=sub_category != "member",
+            )
             print(
                 f"Fetched {len(videos)} videos from '{category}' "
                 f"-> '{sub_category}'."
@@ -600,7 +611,9 @@ def initialize_all_playlists():
                 f"-> '{sub_category}' (Playlist: {playlist_id})..."
             )
 
-            videos = fetch_all_videos_from_playlist(playlist_id)
+            videos = fetch_all_videos_from_playlist(
+                playlist_id, include_view_count=sub_category != "member"
+            )
             print(
                 f"Fetched {len(videos)} videos from '{category}' "
                 f"-> '{sub_category}'."
