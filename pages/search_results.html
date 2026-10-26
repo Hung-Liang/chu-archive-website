@@ -182,6 +182,14 @@
         font-size: 1em;
         box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
       }
+      #sort-select {
+        display: block;
+        margin: 10px auto 0;
+        padding: 8px 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1em;
+      }
 
       /* Video List Styles */
       #video-list {
@@ -550,6 +558,10 @@
           id="search-input"
           placeholder="輸入直播標題關鍵字搜尋..."
         />
+        <select id="sort-select">
+          <option value="newest">最新上傳</option>
+          <option value="oldest">最舊上傳</option>
+        </select>
       </div>
 
       <div
@@ -592,6 +604,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const searchInput = document.getElementById("search-input");
+        const sortSelect = document.getElementById("sort-select");
         const videoListContainer = document.getElementById("video-list");
         const searchResultsInfo = document.getElementById(
           "search-results-info",
@@ -733,8 +746,12 @@
             return;
           }
 
+          // all_videos_index.json is already newest-first (sorted by update.py)
+          const sortedResults =
+            sortSelect.value === "oldest" ? [...results].reverse() : results;
+
           const groupedVideos = {};
-          results.forEach((video) => {
+          sortedResults.forEach((video) => {
             const category = video.category;
             const subCategory = video.subCategory;
 
@@ -900,6 +917,7 @@
           });
 
         searchInput.addEventListener("input", performSearch);
+        sortSelect.addEventListener("change", performSearch);
       });
     </script>
   </body>
