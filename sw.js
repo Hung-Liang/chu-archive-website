@@ -1,9 +1,10 @@
-const CACHE_NAME = 'chu-archive-v2';
+const CACHE_NAME = 'chu-archive-v3';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './asset/icon.jpg',
+  './asset/thumbnail_placeholder.svg',
   './scripts/theme.js',
   './scripts/render.js',
   './data/index.json',
