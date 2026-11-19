@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chu-archive-v8';
+const CACHE_NAME = 'chu-archive-v9';
 const ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const ASSETS = [
   './pages/search_results.html',
   './manifest.json',
   './asset/icon.jpg',
+  './asset/icon.png',
   './asset/thumbnail_placeholder.svg',
   './scripts/common.js',
   './scripts/theme.js',
