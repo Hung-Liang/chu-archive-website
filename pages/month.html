@@ -159,27 +159,8 @@
     <script src="../scripts/render.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const lastUpdateInfo = document.getElementById("last-update-info");
-
         // 載入最後更新日期
-        fetch("../data/last_update.json")
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            return res.json();
-          })
-          .then((data) => {
-            if (data && data.last_update) {
-              lastUpdateInfo.textContent = `最後更新日期: ${formatLastUpdate(data.last_update)}`;
-            } else {
-              lastUpdateInfo.textContent = "最後更新日期: 無法載入";
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching last_update.json:", error);
-            lastUpdateInfo.textContent = "最後更新日期: 載入失敗";
-          });
+        loadLastUpdate("../data/last_update.json");
       });
     </script>
   </body>

@@ -17,54 +17,6 @@ document.getElementById("month-title").textContent = monthLabel;
 document.getElementById("month-subtitle").textContent = scopeLabel;
 document.title = `${monthLabel} ${scopeLabel} - 宅宅軍團長回顧`;
 
-function renderVideoItem(video) {
-    const div = document.createElement("div");
-    div.className = "video-item";
-    const youtubeUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
-
-    let tagsHtml = "";
-    if (video.tags && video.tags.length > 0) {
-        tagsHtml =
-            `<div class="video-tags">` +
-            video.tags
-                .map((tag) => `<span data-tag="${escapeHtml(String(tag).toLowerCase())}">${escapeHtml(tag)}</span>`)
-                .join("") +
-            `</div>`;
-    }
-
-    const durationHtml = video.duration ? `<span class="video-duration">${video.duration}</span>` : "";
-    const viewCountHtml = video.viewCount && subCategory !== "member" ?`<p class="video-view-count">${Number(video.viewCount).toLocaleString()} 次觀看</p>` : "";
-
-    div.innerHTML = `
-        <a href="${youtubeUrl}" target="_blank">
-            <div class="video-thumbnail-container">
-                <img src="${video.thumbnail}" alt="${escapeHtml(video.title)}" width="320" loading="lazy" onerror="this.onerror=null;this.src='../asset/thumbnail_placeholder.svg'">
-                ${durationHtml}
-            </div>
-            <p class="video-title">${escapeHtml(video.title)}</p>
-            ${viewCountHtml}
-            <p class="video-date">${new Date(video.publishedAt).toLocaleDateString()}</p>
-        </a>
-        ${tagsHtml}
-    `;
-
-    // Add event listeners for tags to redirect to search_results.html
-    if (video.tags && video.tags.length > 0) {
-        div.querySelectorAll(".video-tags span").forEach((tagSpan) => {
-            tagSpan.addEventListener("click", (event) => {
-                event.preventDefault(); // Prevent default link behavior
-                event.stopPropagation(); // Stop event bubbling
-                const tag = tagSpan.dataset.tag; // This tag is already lowercase
-                // Redirect to search_results.html with the tag as a query parameter
-                window.location.href = `../pages/search_results.html?tag=${encodeURIComponent(
-                    tag
-                )}`;
-            });
-        });
-    }
-    return div;
-}
-
 fetch(`../data/${category}/${subCategory}/${year}/${month}.json`)
     .then((res) => {
         if (!res.ok) {
@@ -83,7 +35,7 @@ fetch(`../data/${category}/${subCategory}/${year}/${month}.json`)
         }
 
         videos.forEach((video) => {
-            container.appendChild(renderVideoItem(video));
+            container.appendChild(renderVideoItem(video, { subCategory }));
         });
     })
     .catch((error) => {
