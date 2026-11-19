@@ -54,6 +54,9 @@ def parse_description_for_tags(title, description):
         tags.append("初見")
     all_tags = re.findall(r"#(\w+)", description)
     for tag in all_tags:
+        # Chapter markers such as "#1" are not tags
+        if tag.isdigit():
+            continue
         if tag not in tags and tag.lower() not in ignore_tags:
             tags.append(tag)
 

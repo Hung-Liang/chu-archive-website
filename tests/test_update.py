@@ -91,6 +91,16 @@ class ParseDescriptionForTagsTest(unittest.TestCase):
             ["real"],
         )
 
+    def test_skips_numeric_tags(self):
+        self.assertEqual(
+            update.parse_description_for_tags("t", "#1 #遊戲"), ["遊戲"]
+        )
+
+    def test_keeps_tags_mixing_digits_and_text(self):
+        self.assertEqual(
+            update.parse_description_for_tags("t", "#2024年"), ["2024年"]
+        )
+
     def test_no_tags(self):
         self.assertEqual(update.parse_description_for_tags("t", "plain"), [])
 
