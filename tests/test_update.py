@@ -83,6 +83,12 @@ class ParseDescriptionForTagsTest(unittest.TestCase):
             ["讀書", "三體"],
         )
 
+    def test_ignores_url_fragments(self):
+        self.assertEqual(
+            update.parse_description_for_tags("t", "https://a.com/p#x #real"),
+            ["real"],
+        )
+
     def test_no_tags(self):
         self.assertEqual(update.parse_description_for_tags("t", "plain"), [])
 

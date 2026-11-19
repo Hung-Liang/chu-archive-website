@@ -29,6 +29,9 @@ def parse_description_for_tags(title, description):
     Parses video description to extract tags.
     Currently empty, awaiting your algorithm.
     """
+    # A "#fragment" inside a URL is not a hashtag
+    description = re.sub(r"(?:https?://|www\.)\S+", " ", description, flags=re.I)
+
     ignore_tags = [
         "台v",
         "中文vtuber",
