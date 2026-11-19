@@ -17,15 +17,6 @@ document.getElementById("month-title").textContent = monthLabel;
 document.getElementById("month-subtitle").textContent = scopeLabel;
 document.title = `${monthLabel} ${scopeLabel} - 宅宅軍團長回顧`;
 
-function escapeHtml(value) {
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-}
-
 function renderVideoItem(video) {
     const div = document.createElement("div");
     div.className = "video-item";
