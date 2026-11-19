@@ -259,10 +259,6 @@
               categoryTitle.textContent = "直播存檔";
             } else if (category === "gaming") {
               categoryTitle.textContent = "遊戲存檔"; // Updated to match previous edits
-            } else {
-              categoryTitle.textContent = `${
-                category.charAt(0).toUpperCase() + category.slice(1)
-              }`; // Fallback for other categories
             }
             container.appendChild(categoryTitle);
 
@@ -282,10 +278,6 @@
                 subCategoryTitle.textContent = "一般直播";
               } else if (sub_category === "member") {
                 subCategoryTitle.textContent = "會限";
-              } else {
-                subCategoryTitle.textContent = `${
-                  sub_category.charAt(0).toUpperCase() + sub_category.slice(1)
-                }`; // Fallback
               }
               container.appendChild(subCategoryTitle);
 
