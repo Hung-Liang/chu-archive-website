@@ -11,10 +11,13 @@ function escapeHtml(value) {
         .replace(/'/g, "&#39;");
 }
 
+function formatVideoDate(publishedAt) {
+    // Match the archive month, which update.py assigns in the site timezone
+    return new Date(publishedAt).toLocaleDateString(undefined, { timeZone: "Asia/Taipei" });
+}
+
 function formatLastUpdate(value) {
-    // Older data has no timezone; it was written in UTC by GitHub Actions
-    const hasTimezone = /(Z|[+-]\d{2}:?\d{2})$/i.test(value);
-    const date = new Date(hasTimezone ? value : value.replace(" ", "T") + "Z");
+    const date = new Date(value);
     if (isNaN(date)) {
         return value;
     }
@@ -123,7 +126,7 @@ function renderVideoItem(video, { subCategory, showMonth = false }) {
             <p class="video-title">${escapeHtml(video.title)}</p>
             ${viewCountHtml}
             ${monthHtml}
-            <p class="video-date">${new Date(video.publishedAt).toLocaleDateString()}</p>
+            <p class="video-date">${formatVideoDate(video.publishedAt)}</p>
         </a>
         ${tagsHtml}
     `;
