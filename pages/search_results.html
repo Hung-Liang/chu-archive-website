@@ -381,7 +381,12 @@
             videoListContainer.innerHTML = `<p class='list-message error'>無法載入搜尋資料，請稍後再試。<br>錯誤: ${escapeHtml(error.message)}</p>`;
           });
 
-        searchInput.addEventListener("input", performSearch);
+        // Debounce typing so each keystroke doesn't rebuild every result card.
+        let searchDebounceTimer;
+        searchInput.addEventListener("input", () => {
+          clearTimeout(searchDebounceTimer);
+          searchDebounceTimer = setTimeout(performSearch, 150);
+        });
         sortSelect.addEventListener("change", performSearch);
       });
     </script>
