@@ -6,9 +6,6 @@ const month = String(params.get("m")).padStart(2, "0");
 
 // Removed tag popup related elements and logic as it's now handled by redirection to search_results.html
 
-const CATEGORY_NAMES = { life: "直播存檔", gaming: "遊戲存檔" };
-const SUB_CATEGORY_NAMES = { normal: "一般直播", member: "會限" };
-
 const monthLabel = `${year} 年 ${Number(month)} 月`;
 const scopeLabel = [CATEGORY_NAMES[category], SUB_CATEGORY_NAMES[subCategory]]
     .filter(Boolean)

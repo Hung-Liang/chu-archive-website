@@ -223,21 +223,11 @@
         loadLastUpdate("../data/last_update.json");
 
         function getCategoryDisplayName(category) {
-          if (category === "life") {
-            return "直播存檔";
-          } else if (category === "gaming") {
-            return "遊戲存檔";
-          }
-          return "";
+          return CATEGORY_NAMES[category] || "";
         }
 
         function getSubCategoryDisplayName(subCategory) {
-          if (subCategory === "normal") {
-            return "一般直播";
-          } else if (subCategory === "member") {
-            return "會限";
-          }
-          return "";
+          return SUB_CATEGORY_NAMES[subCategory] || "";
         }
 
         function renderSearchResults(results) {

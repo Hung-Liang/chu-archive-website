@@ -255,11 +255,7 @@
 
             const categoryTitle = document.createElement("h2");
             // Set category title based on category key
-            if (category === "life") {
-              categoryTitle.textContent = "直播存檔";
-            } else if (category === "gaming") {
-              categoryTitle.textContent = "遊戲存檔"; // Updated to match previous edits
-            }
+            categoryTitle.textContent = CATEGORY_NAMES[category];
             container.appendChild(categoryTitle);
 
             // Define the desired order of sub-categories (Normal first, then Member)
@@ -274,11 +270,7 @@
 
               const subCategoryTitle = document.createElement("h3");
               // Set sub-category title based on sub_category key
-              if (sub_category === "normal") {
-                subCategoryTitle.textContent = "一般直播";
-              } else if (sub_category === "member") {
-                subCategoryTitle.textContent = "會限";
-              }
+              subCategoryTitle.textContent = SUB_CATEGORY_NAMES[sub_category];
               container.appendChild(subCategoryTitle);
 
               const yearsData = index[category][sub_category];

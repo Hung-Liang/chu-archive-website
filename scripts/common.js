@@ -1,3 +1,7 @@
+// Display names shared by the home, month and search pages
+const CATEGORY_NAMES = { life: "直播存檔", gaming: "遊戲存檔" };
+const SUB_CATEGORY_NAMES = { normal: "一般直播", member: "會限" };
+
 function escapeHtml(value) {
     return String(value)
         .replace(/&/g, "&amp;")
